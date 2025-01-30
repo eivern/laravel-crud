@@ -29,14 +29,14 @@ jobs:
       - name: Install Node.js and npm dependencies
         uses: actions/setup-node@v3
         with:
-          node-version: "16" # Adjust the Node.js version as per your project requirements
+          node-version: "16"
 
       - name: Install npm dependencies
-        run: npm install # Installs npm dependencies (Laravel Mix or other frontend dependencies)
+        run: npm install
 
       # Step 5: Build frontend assets
       - name: Build frontend assets
-        run: npm run prod # Adjust this to 'npm run dev' or another command if needed
+        run: npm run build
 
       # Step 6: FTP deploy to cPanel
       - name: FTP-Deploy-Action
@@ -45,8 +45,6 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          # local-dir: ./  # Ensure this points to the correct directory
-          # server-dir: /public_html/your-project-folder/  # Adjust this as needed for your server
           exclude: |
             .git/*
             node_modules/*
