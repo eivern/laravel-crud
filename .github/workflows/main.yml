@@ -48,8 +48,4 @@ jobs:
           local-dir: ./ # Ensure this points to the correct directory
           server-dir: /repositories/laravel-crud/ # Adjust this as needed for your server
           exclude: |
-            .git/*
             node_modules/*
-            .env
-            .gitignore
-            *.log  # Optional, exclude unnecessary files
