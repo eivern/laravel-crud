@@ -45,6 +45,8 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./ # Ensure this points to the correct directory
+          server-dir: /repositories/laravel-crud/ # Adjust this as needed for your server
           exclude: |
             .git/*
             node_modules/*
