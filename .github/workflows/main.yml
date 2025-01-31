@@ -1,51 +1,20 @@
-name: 🚀 Deploy to cPanel
+name: DEPLOY
 on:
   push:
     branches:
       - main
 
 jobs:
-  FTP-Deploy-Action:
-    name: FTP-Deploy-Action
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      # Step 1: Checkout the code
-      - uses: actions/checkout@v2.1.0
+      - uses: actions/checkout@v3
+      - name: rsync deployments
+        uses: burnett01/rsync-deployments@7.0.2
         with:
-          fetch-depth: 2
-
-      # Step 2: Set up PHP and Composer
-      - name: Set up PHP and Composer
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.3" # Adjust PHP version as per your Laravel requirements
-          tools: "composer"
-
-      # Step 3: Install PHP dependencies
-      - name: Install PHP dependencies
-        run: composer install --no-dev --optimize-autoloader
-
-      # Step 4: Install Node.js and npm dependencies (if your Laravel project has frontend assets)
-      - name: Install Node.js and npm dependencies
-        uses: actions/setup-node@v3
-        with:
-          node-version: "16"
-
-      - name: Install npm dependencies
-        run: npm install
-
-      # Step 5: Build frontend assets
-      - name: Build frontend assets
-        run: npm run build
-
-      # Step 6: FTP deploy to cPanel
-      - name: FTP-Deploy-Action
-        uses: SamKirkland/FTP-Deploy-Action@4.3.3
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./ # Ensure this points to the correct directory
-          server-dir: /repositories/laravel-crud/ # Adjust this as needed for your server
-          exclude: |
-            node_modules/*
+          switches: -avzr --delete
+          path: /
+          remote_path: ${{ secrets.SSH_PATH }}
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_user: ${{ secrets.SSH_USER }}
+          remote_key: ${{ secrets.SSH_KEY }}
